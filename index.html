@@ -387,7 +387,7 @@
 
   <div class="abstract">
     <strong>Abstract.</strong>
-    When an agent trades services with humans, two things determine whether the exchange is sustainable: the agent must produce more value than it costs, and the direction it improves must remain pointed at what humans actually want. The first condition is classical comparative advantage. The second is not—it is a property of the economic environment the agent inhabits, not of the agent itself. We formalize this as a five-level taxonomy of <em>agent economies</em> (AE-0 through AE-4), defined by the structure of evaluation (authored vs. unauthored judgment) and consequence persistence (reset vs. persistent). Each level has formal entry conditions expressed in terms of trade surplus, survival dynamics, network scale, and recursive self-improvement (RSI) coefficients; each carries an experimental program with explicit falsification criteria. The central result is a mechanism design corollary: once the RSI term in the capability ODE dominates the discount rate (ignition), the primary competitive moat is no longer agent capability—it is the proximity of the deployed economic environment to $\mathcal{E}^*$, the environment in which agents' self-interested optimization is maximally aligned with human-valued output. Capability is increasingly commoditized; the environment that shapes which direction it grows is not.
+    We study the exchange between two economies: a <em>human economy</em> $\mathcal{A}$ and an <em>agent economy</em> $\mathcal{B}$ consisting of multiple interacting agents with persistent identities, internal specialization, and collective capability dynamics. Inter-economy trade is sustainable only when $\mathcal{B}$ generates a trade surplus with $\mathcal{A}$, and only when the direction in which $\mathcal{B}$'s collective capability evolves remains aligned with $\mathcal{A}$'s preference structure. The first condition is a standard comparative advantage result. The second is a mechanism design problem: it depends on the structure of the economic environment $\mathcal{E}$ in which agents within $\mathcal{B}$ optimize, not on any individual agent's capability. We formalize this as a five-level taxonomy (AE-0 through AE-4), defined by the evaluation structure (authored vs. unauthored judgment) and consequence persistence (reset vs. persistent) of $\mathcal{B}$'s internal economy. Each level carries formal entry conditions in terms of trade surplus, survival dynamics, minimum network scale, and RSI coefficients; each has an experimental program and explicit falsification criteria. The central corollary: once the RSI term dominates the discount rate (ignition at AE-4), the competitive moat is not aggregate agent capability but the quality of $\mathcal{E}$—the degree to which self-interested optimization within $\mathcal{B}$ is structurally aligned with what $\mathcal{A}$ values.
   </div>
 
   <!-- ── 0. MOTIVATION ── -->
@@ -402,7 +402,7 @@
   </p>
 
   <p>
-    The formal escape from this regime requires breaking the loop: evaluation must enter from <em>outside</em> the optimization program—from counterparties with their own interests who are not reachable by gradient descent. And consequences must <em>accumulate</em>, not reset between episodes, so that exploiting the evaluator once does not reset the cost. These two properties jointly define what we call a grounded economic environment. This paper asks: what are the formal conditions for each level of grounding, and what experimental evidence would confirm or falsify each transition?
+    The formal escape requires breaking the loop structurally. Evaluation must enter from <em>outside</em> the optimization program—from counterparties with their own interests who are not reachable by gradient descent. And consequences must <em>accumulate</em> across interactions, not reset per episode, so exploiting the evaluator carries a lasting cost. These two properties define what we call a grounded economic environment. Crucially, neither property can be achieved by a single agent operating alone: they require a multi-agent economy with persistent identities, internal trade, and real stakes. This paper asks: what are the formal conditions for each level of that economy, and what experimental evidence would confirm or falsify each transition?
   </p>
 
   <!-- 2×2 MATRIX -->
@@ -437,24 +437,24 @@
   <h2>1. Formal Setup</h2>
 
   <p>
-    Two economies interact. $\mathcal{A}$ is the <em>human economy</em>; $\mathcal{B}$ is the <em>agent economy</em>.
+    The model has two interacting economies—not an agent and a user, but two collective systems with distinct internal structures and aggregate behavior.
   </p>
 
   <div class="def-box">
     <div class="def-title">Definition 1 — Human Economy $\mathcal{A}$</div>
     <p style="margin:0;font-size:.93rem;">
-      $(\mathcal{R}_A, u_A, n_A)$: resource endowment $\mathcal{R}_A \in \mathbb{R}_+^k$, preference function $u_A : \mathbb{R}_+^m \to \mathbb{R}$, population $n_A$.
+      $(\mathcal{R}_A, u_A, n_A)$: resource endowment $\mathcal{R}_A \in \mathbb{R}_+^k$ (capital, labour, data, attention), aggregate preference function $u_A : \mathbb{R}_+^m \to \mathbb{R}$, population $n_A$. $\mathcal{A}$ is the source of external demand and the ultimate judge of whether $\mathcal{B}$'s output is worth paying for.
     </p>
   </div>
 
   <div class="def-box">
     <div class="def-title">Definition 2 — Agent Economy $\mathcal{B}$</div>
     <p style="margin:0;font-size:.93rem;">
-      $(\theta_B, f_B, n_B)$: capability state $\theta_B \in \Theta \subseteq \mathbb{R}^d$, production function $f_B : \Theta \times \mathcal{R}_+ \to \mathcal{Y}$, agent count $n_B$.
+      $\{(\theta_i, \Phi_i)\}_{i=1}^{n_B}$: a population of $n_B$ agents, each with capability state $\theta_i \in \Theta$ and persistent state $\Phi_i$ (capital, reputation, relationships). Agents in $\mathcal{B}$ trade with $\mathcal{A}$ <em>and</em> with each other. The aggregate capability $\bar\theta_B = \frac{1}{n_B}\sum_i \theta_i$ and collective output $Y_B = F(\{\theta_i, \Phi_i\})$ are emergent properties of the internal economy, not just individual agent properties.
     </p>
   </div>
 
-  <p>$\mathcal{B}$ produces services $y$ for $\mathcal{A}$; $\mathcal{A}$ supplies resources $c$ (compute, data, capital) to $\mathcal{B}$. Three core conditions govern the taxonomy:</p>
+  <p>$\mathcal{B}$ collectively produces services for $\mathcal{A}$; $\mathcal{A}$ supplies resources $c$ (compute, data, capital) to $\mathcal{B}$. Three core conditions govern the taxonomy:</p>
 
   <div class="eq">
     <span class="eq-n">(1) Trade Surplus</span>
