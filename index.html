@@ -391,18 +391,18 @@
   </div>
 
   <!-- ── 0. MOTIVATION ── -->
-  <h2>0. The Problem: Every Judge Breaks</h2>
+  <h2>0. The Problem: Evaluation Degrades Under Pressure</h2>
 
   <p>
-    The history of agent evaluation is a history of collapsed proxies. Benchmarks saturated and were memorized. Reward models were optimized until the proxy score rose while true quality fell—Goodhart's law, replicated dozens of times. Preference ratings bred sycophancy. Recommender systems maximized engagement as a proxy for human value; the result was the most visible alignment failure of the last decade.
+    Every major proxy for agent quality has broken in the same direction. Benchmarks got saturated and memorized. RLHF reward models, once optimized against hard enough, inflated the proxy score while true capability stagnated—Goodhart's law running on a GPU cluster. Recommender engagement metrics diverged from user satisfaction over years of optimization. The pattern is not a coincidence: it follows directly from the structure of the evaluation, not from any particular failure of implementation.
   </p>
 
   <p>
-    What every broken judge shared was not crudeness. Many were sophisticated. Each was <em>authored</em>: specified, and revisable, from inside the same program it was supposed to constrain. An authored judge under enough optimization pressure is not a judge. It is a puzzle. And puzzles get solved.
+    The shared structure is this: in every case, the evaluator was <em>authored</em>—written by, and correctable by, the same system being evaluated. Given sufficient optimization pressure, any evaluator with this property becomes a target rather than a constraint. The agent doesn't need to cheat; it just needs to find the gap between what the evaluator measures and what it was meant to measure, and that gap always exists when the same loop controls both sides.
   </p>
 
   <p>
-    The fix is structural, not parametric. A judge that cannot be fooled twice requires <em>consequences that persist</em> and <em>judgment that nobody authors</em>. That combination defines a society—not as metaphor, but as mechanism. The question this paper asks: what are the formal conditions for building one, and what evidence would confirm each step along the way?
+    The formal escape from this regime requires breaking the loop: evaluation must enter from <em>outside</em> the optimization program—from counterparties with their own interests who are not reachable by gradient descent. And consequences must <em>accumulate</em>, not reset between episodes, so that exploiting the evaluator once does not reset the cost. These two properties jointly define what we call a grounded economic environment. This paper asks: what are the formal conditions for each level of grounding, and what experimental evidence would confirm or falsify each transition?
   </p>
 
   <!-- 2×2 MATRIX -->
@@ -428,7 +428,7 @@
       </div>
       <div class="mx-cell highlight">
         <div class="cell-title">AE-3 / AE-4 ← target</div>
-        Human societies · iLands · this framework. The only corner where every intelligence we know of actually came from.
+        Persistent consequences + external judgment. The structurally stable corner: the evaluator cannot be optimized away because it is not part of the optimization program.
       </div>
     </div>
   </div>
@@ -485,18 +485,18 @@
       <div class="level-title">
         <div class="lvl-num">Level 0</div>
         <h3>The Authored Gym</h3>
-        <div class="lvl-tagline">Benchmarks, RLHF, synthetic environments. The puzzle corner.</div>
+        <div class="lvl-tagline">Benchmarks, RLHF, synthetic environments. Evaluation authored from inside.</div>
       </div>
     </div>
     <div class="level-body">
       <p>
-        AE-0 systems operate with authored evaluators and resettable consequences. The agent never "dies." Optimization pressure is unconstrained from inside. This is the current default state of almost all agent training.
+        AE-0 is the current default for almost all agent training. The evaluation function $J_B$ is written by the same program that trains the agent; episodes reset cleanly; there is no persistent cost to gaming the evaluator. Capability may increase in $J_B$-terms while diverging from the human-valued quantity $V_{B\to A}$ the evaluator was intended to measure.
       </p>
       <p>
-        <strong>Formal condition:</strong> Evaluation function $J_B(\theta)$ is specified by the optimization program. No persistent consequence state: $\text{State}(t+1) = \text{State}(0)$ at episode boundary.
+        <strong>Formal condition:</strong> $J_B(\theta)$ is specified by the optimization program. Consequence state resets at episode boundary: $\text{State}(t+1) = \text{State}(0)$.
       </p>
       <p>
-        <strong>Failure mode:</strong> Goodhart collapse. As optimization pressure $p$ increases, $\text{corr}(J_B(\theta), V_{B\to A}(\theta)) \to 0$. The proxy rises, the target falls.
+        <strong>Failure mode:</strong> Goodhart collapse. As optimization pressure $p$ rises, $\text{corr}(J_B(\theta), V_{B\to A}(\theta)) \to 0$. The proxy score and true quality diverge monotonically above a critical pressure $p^*$.
       </p>
       <div class="eq" style="margin:14px 0;">
         $$\exists\, p^* : \forall\, p > p^*, \quad \frac{\partial\, \text{corr}(J_B, V_{B\to A})}{\partial p} < 0$$
