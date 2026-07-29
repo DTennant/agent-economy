@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Agent Economies: Trade Surplus, RSI Dynamics, and Mechanism Design</title>
+  <title>Levels of Agent Economy — From Authored Evaluation to Grounded Selection</title>
   <script>
     MathJax = {
       tex: {
-        inlineMath: [['$', '$'], ['\\(', '\\)']],
-        displayMath: [['$$', '$$'], ['\\[', '\\]']],
+        inlineMath: [['$','$'],['\\(','\\)']],
+        displayMath: [['$$','$$'],['\\[','\\]']],
         packages: {'[+]': ['ams']}
       },
       options: { skipHtmlTags: ['script','noscript','style','textarea','pre'] }
@@ -17,17 +17,20 @@
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   <style>
     :root {
-      --bg: #0f1117;
-      --surface: #1a1d26;
-      --surface2: #22273a;
-      --accent: #6c8ef7;
-      --accent2: #a78bfa;
-      --green: #4ade80;
-      --amber: #fbbf24;
-      --red: #f87171;
-      --text: #e2e8f0;
-      --muted: #94a3b8;
-      --border: #2e3347;
+      --bg: #0c0e14;
+      --surface: #13161f;
+      --surface2: #1c2030;
+      --surface3: #222840;
+      --accent: #5b8df5;
+      --accent2: #9d71f0;
+      --green: #3fd68e;
+      --amber: #f5a623;
+      --red: #f05353;
+      --teal: #2dd4bf;
+      --text: #dde3f0;
+      --muted: #7a8aab;
+      --border: #252c42;
+      --border2: #1e2438;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -35,533 +38,821 @@
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: 'Georgia', 'Times New Roman', serif;
-      font-size: 17px;
-      line-height: 1.8;
+      font-family: 'Georgia', serif;
+      font-size: 16.5px;
+      line-height: 1.85;
     }
 
+    /* ── HERO ── */
     .hero {
-      background: linear-gradient(135deg, #0f1117 0%, #1a1d26 40%, #12172b 100%);
-      border-bottom: 1px solid var(--border);
-      padding: 80px 24px 60px;
+      padding: 88px 24px 64px;
       text-align: center;
+      background: radial-gradient(ellipse 80% 60% at 50% -10%, #151c3a 0%, var(--bg) 70%);
+      border-bottom: 1px solid var(--border);
     }
-
-    .hero .label {
-      font-family: 'Courier New', monospace;
-      font-size: 11px;
-      letter-spacing: 0.2em;
+    .hero-tag {
+      font-family: monospace;
+      font-size: 10.5px;
+      letter-spacing: .22em;
       text-transform: uppercase;
       color: var(--accent);
-      margin-bottom: 20px;
+      margin-bottom: 18px;
     }
-
     .hero h1 {
-      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-size: clamp(1.7rem, 3.8vw, 2.9rem);
       font-weight: 700;
-      letter-spacing: -0.02em;
-      max-width: 820px;
-      margin: 0 auto 24px;
-      line-height: 1.25;
-      background: linear-gradient(135deg, #e2e8f0 30%, #a78bfa);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      letter-spacing: -.025em;
+      line-height: 1.22;
+      max-width: 860px;
+      margin: 0 auto 22px;
+      background: linear-gradient(140deg, #dde3f0 20%, #9d71f0 80%);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
       background-clip: text;
     }
-
-    .hero .subtitle {
+    .hero-sub {
       color: var(--muted);
-      font-size: 1rem;
-      font-family: 'Courier New', monospace;
-      max-width: 540px;
-      margin: 0 auto 32px;
+      font-family: monospace;
+      font-size: .9rem;
+      max-width: 560px;
+      margin: 0 auto 36px;
     }
-
-    .hero .meta {
-      display: flex;
-      justify-content: center;
-      gap: 32px;
-      flex-wrap: wrap;
-      font-family: 'Courier New', monospace;
-      font-size: 12px;
+    .hero-pills {
+      display: flex; justify-content: center; flex-wrap: wrap; gap: 10px;
+    }
+    .pill {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 5px 14px;
+      font-family: monospace;
+      font-size: .75rem;
       color: var(--muted);
     }
 
-    .hero .meta span { display: flex; align-items: center; gap: 6px; }
+    /* ── LAYOUT ── */
+    .wrap { max-width: 860px; margin: 0 auto; padding: 64px 24px; }
 
-    .container {
-      max-width: 820px;
-      margin: 0 auto;
-      padding: 60px 24px;
+    /* ── SECTION HEADERS ── */
+    h2 {
+      font-family: monospace;
+      font-size: .88rem;
+      color: var(--accent);
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      margin: 64px 0 20px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
     }
+    h3 { font-size: 1.1rem; color: var(--text); margin: 28px 0 10px; font-weight: 600; }
+    p { margin-bottom: 1.15em; }
 
+    /* ── ABSTRACT ── */
     .abstract {
       background: var(--surface);
       border: 1px solid var(--border);
       border-left: 3px solid var(--accent);
       border-radius: 8px;
-      padding: 28px 32px;
-      margin-bottom: 56px;
+      padding: 26px 30px;
+      margin-bottom: 52px;
       font-style: italic;
       color: var(--muted);
-      font-size: 0.95rem;
+      font-size: .94rem;
     }
-
     .abstract strong { color: var(--text); font-style: normal; }
 
-    h2 {
-      font-family: 'Courier New', monospace;
-      font-size: 1rem;
-      color: var(--accent);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin: 56px 0 20px;
-      padding-bottom: 10px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    h3 {
-      font-size: 1.1rem;
-      color: var(--text);
-      margin: 32px 0 12px;
-      font-weight: 600;
-    }
-
-    p { margin-bottom: 1.2em; }
-
-    .eq-block {
+    /* ── EQUATIONS ── */
+    .eq {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 8px;
-      padding: 20px 28px;
-      margin: 24px 0;
+      padding: 18px 24px;
+      margin: 20px 0;
       text-align: center;
       overflow-x: auto;
       position: relative;
     }
-
-    .eq-label {
-      position: absolute;
-      right: 18px;
-      top: 50%;
-      transform: translateY(-50%);
-      font-family: 'Courier New', monospace;
-      font-size: 12px;
-      color: var(--muted);
+    .eq-n {
+      position: absolute; right: 16px; top: 50%; transform: translateY(-50%);
+      font-family: monospace; font-size: 11px; color: var(--muted);
     }
 
+    /* ── 2×2 MATRIX ── */
+    .matrix-wrap { margin: 32px 0; overflow-x: auto; }
+    .matrix {
+      display: grid;
+      grid-template-columns: 140px 1fr 1fr;
+      grid-template-rows: auto 1fr 1fr;
+      gap: 2px;
+      min-width: 480px;
+    }
+    .mx-corner { background: transparent; }
+    .mx-header {
+      background: var(--surface2);
+      padding: 10px 16px;
+      font-family: monospace;
+      font-size: .75rem;
+      color: var(--accent);
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      text-align: center;
+      border-radius: 6px;
+    }
+    .mx-row-label {
+      background: var(--surface2);
+      padding: 10px 14px;
+      font-family: monospace;
+      font-size: .75rem;
+      color: var(--accent);
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      display: flex; align-items: center;
+      border-radius: 6px;
+    }
+    .mx-cell {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 18px;
+      font-size: .85rem;
+    }
+    .mx-cell .cell-title {
+      font-family: monospace; font-size: .72rem; letter-spacing: .1em;
+      text-transform: uppercase; color: var(--muted); margin-bottom: 5px;
+    }
+    .mx-cell.highlight { border-color: var(--green); background: #0f1f18; }
+    .mx-cell.highlight .cell-title { color: var(--green); }
+
+    /* ── LEVEL CARDS ── */
+    .level-card {
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      margin: 28px 0;
+    }
+    .level-header {
+      display: flex; align-items: flex-start; gap: 18px;
+      padding: 22px 26px;
+      border-bottom: 1px solid var(--border);
+    }
+    .level-badge {
+      flex-shrink: 0;
+      width: 52px; height: 52px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-family: monospace; font-size: 1.1rem; font-weight: 700;
+    }
+    .level-title { flex: 1; }
+    .level-title .lvl-num {
+      font-family: monospace; font-size: .72rem; letter-spacing: .14em;
+      text-transform: uppercase; margin-bottom: 4px;
+    }
+    .level-title h3 { margin: 0 0 4px; font-size: 1.1rem; }
+    .level-title .lvl-tagline { color: var(--muted); font-size: .88rem; font-style: italic; }
+
+    .level-body { padding: 22px 26px; }
+    .level-body .cols {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+      margin-top: 18px;
+    }
+    @media (max-width: 620px) { .level-body .cols { grid-template-columns: 1fr; } }
+
+    .sub-box {
+      background: var(--surface2);
+      border: 1px solid var(--border2);
+      border-radius: 9px;
+      padding: 14px 16px;
+    }
+    .sub-box .sub-label {
+      font-family: monospace; font-size: .68rem; letter-spacing: .14em;
+      text-transform: uppercase; margin-bottom: 7px;
+    }
+    .sub-box ul { padding-left: 1.2em; font-size: .85rem; color: var(--muted); }
+    .sub-box ul li { margin-bottom: 4px; }
+
+    .kill-box {
+      background: #1c0f0f;
+      border: 1px solid #3a2020;
+      border-left: 3px solid var(--red);
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-top: 14px;
+      font-family: monospace; font-size: .8rem; color: #e07070;
+    }
+    .kill-box strong { color: var(--red); }
+
+    /* LEVEL COLORS */
+    .l0 .level-badge { background: #1a1a2e; color: #5566aa; }
+    .l0 .level-header { background: #11121e; }
+    .l0 .lvl-num { color: #5566aa; }
+    .l1 .level-badge { background: #1a2430; color: var(--accent); }
+    .l1 .level-header { background: #111820; }
+    .l1 .lvl-num { color: var(--accent); }
+    .l2 .level-badge { background: #1a2820; color: var(--green); }
+    .l2 .level-header { background: #111a16; }
+    .l2 .lvl-num { color: var(--green); }
+    .l3 .level-badge { background: #211a30; color: var(--accent2); }
+    .l3 .level-header { background: #161020; }
+    .l3 .lvl-num { color: var(--accent2); }
+    .l4 .level-badge { background: #2a1e10; color: var(--amber); }
+    .l4 .level-header { background: #1c1408; }
+    .l4 .lvl-num { color: var(--amber); }
+
+    /* ── EXPERIMENT TIMELINE ── */
+    .timeline { position: relative; padding-left: 28px; margin: 28px 0; }
+    .timeline::before {
+      content: '';
+      position: absolute; left: 8px; top: 8px; bottom: 8px;
+      width: 2px; background: var(--border);
+    }
+    .stage {
+      position: relative; margin-bottom: 30px;
+    }
+    .stage::before {
+      content: '';
+      position: absolute; left: -23px; top: 6px;
+      width: 10px; height: 10px;
+      border-radius: 50%;
+      background: var(--surface3);
+      border: 2px solid var(--border);
+    }
+    .stage.s0::before { border-color: #5566aa; background: #1a1a2e; }
+    .stage.s1::before { border-color: var(--accent); background: #1a2430; }
+    .stage.s2::before { border-color: var(--green); background: #1a2820; }
+    .stage.s3::before { border-color: var(--accent2); background: #211a30; }
+    .stage.s4::before { border-color: var(--amber); background: #2a1e10; }
+    .stage-header {
+      display: flex; align-items: center; gap: 10px; margin-bottom: 8px;
+    }
+    .stage-tag {
+      font-family: monospace; font-size: .7rem; letter-spacing: .12em;
+      text-transform: uppercase; padding: 2px 8px;
+      border-radius: 4px; background: var(--surface2);
+    }
+    .s0 .stage-tag { color: #5566aa; }
+    .s1 .stage-tag { color: var(--accent); }
+    .s2 .stage-tag { color: var(--green); }
+    .s3 .stage-tag { color: var(--accent2); }
+    .s4 .stage-tag { color: var(--amber); }
+    .stage h4 { font-size: .97rem; margin-bottom: 4px; }
+    .stage p { color: var(--muted); font-size: .87rem; margin-bottom: 6px; }
+    .stage .evidence {
+      font-family: monospace; font-size: .78rem;
+      color: var(--teal);
+      border-top: 1px solid var(--border2);
+      padding-top: 6px; margin-top: 6px;
+    }
+
+    /* ── COROLLARY ── */
+    .corollary {
+      background: linear-gradient(135deg, #110f20, #180f2a);
+      border: 1px solid var(--accent2);
+      border-radius: 14px;
+      padding: 30px;
+      margin: 36px 0;
+    }
+    .cor-label {
+      font-family: monospace; font-size: .7rem; letter-spacing: .16em;
+      text-transform: uppercase; color: var(--accent2); margin-bottom: 10px;
+    }
+    .corollary p { color: var(--text); margin-bottom: 0; font-size: 1.02rem; }
+    .corollary strong { color: var(--accent2); }
+
+    /* ── DEF BOX ── */
     .def-box {
       background: var(--surface2);
       border: 1px solid var(--border);
       border-radius: 10px;
-      padding: 20px 24px;
-      margin: 20px 0;
+      padding: 18px 22px;
+      margin: 18px 0;
+    }
+    .def-title {
+      font-family: monospace; font-size: .7rem; letter-spacing: .15em;
+      text-transform: uppercase; color: var(--accent2); margin-bottom: 6px;
     }
 
-    .def-box .def-title {
-      font-family: 'Courier New', monospace;
-      font-size: 11px;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--accent2);
-      margin-bottom: 8px;
+    /* ── NOTE ── */
+    .note {
+      background: #0f1a14;
+      border: 1px solid #1e3326;
+      border-left: 3px solid var(--green);
+      border-radius: 6px;
+      padding: 12px 16px;
+      font-family: monospace; font-size: .82rem; color: #7ecfa0;
+      margin: 18px 0;
     }
 
-    .hyp-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 16px;
-      margin: 28px 0;
-    }
-
-    @media (max-width: 640px) { .hyp-grid { grid-template-columns: 1fr; } }
-
-    .hyp-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 20px;
-    }
-
-    .hyp-card .hyp-id {
-      font-family: 'Courier New', monospace;
-      font-size: 11px;
-      color: var(--accent);
-      letter-spacing: 0.1em;
-      margin-bottom: 8px;
-    }
-
-    .hyp-card h4 {
-      font-size: 0.95rem;
-      font-weight: 600;
-      margin-bottom: 8px;
-      color: var(--text);
-    }
-
-    .hyp-card p {
-      font-size: 0.85rem;
-      color: var(--muted);
-      margin-bottom: 8px;
-    }
-
-    .hyp-card .verify {
-      font-family: 'Courier New', monospace;
-      font-size: 11px;
-      color: var(--green);
-      border-top: 1px solid var(--border);
-      padding-top: 8px;
-      margin-top: 8px;
-    }
-
-    .corollary {
-      background: linear-gradient(135deg, #12172b, #1a1326);
-      border: 1px solid var(--accent2);
-      border-radius: 12px;
-      padding: 32px;
-      margin: 40px 0;
-    }
-
-    .corollary .cor-label {
-      font-family: 'Courier New', monospace;
-      font-size: 11px;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--accent2);
-      margin-bottom: 12px;
-    }
-
-    .corollary p { color: var(--text); margin-bottom: 0; font-size: 1.05rem; }
-    .corollary strong { color: var(--accent2); }
-
-    .table-wrap {
-      overflow-x: auto;
-      margin: 24px 0;
-    }
-
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 0.88rem;
-      font-family: 'Courier New', monospace;
-    }
-
+    /* ── TABLE ── */
+    .tw { overflow-x: auto; margin: 22px 0; }
+    table { width: 100%; border-collapse: collapse; font-size: .85rem; }
     th {
       background: var(--surface2);
       color: var(--accent);
-      padding: 10px 14px;
+      padding: 9px 13px;
       text-align: left;
       border: 1px solid var(--border);
-      font-size: 11px;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
+      font-family: monospace; font-size: .7rem; letter-spacing: .1em; text-transform: uppercase;
     }
-
-    td {
-      padding: 10px 14px;
-      border: 1px solid var(--border);
-      color: var(--muted);
-      vertical-align: top;
-    }
-
+    td { padding: 9px 13px; border: 1px solid var(--border); color: var(--muted); vertical-align: top; }
     tr:hover td { background: var(--surface); }
 
-    .note {
-      background: #1a1e14;
-      border: 1px solid #2d3a20;
-      border-left: 3px solid var(--green);
-      border-radius: 6px;
-      padding: 14px 18px;
-      font-size: 0.88rem;
-      color: #9dc97d;
-      margin: 20px 0;
-      font-family: 'Courier New', monospace;
-    }
-
-    .section-divider {
-      border: none;
-      border-top: 1px solid var(--border);
-      margin: 40px 0;
-    }
+    hr { border: none; border-top: 1px solid var(--border); margin: 48px 0; }
 
     footer {
       border-top: 1px solid var(--border);
-      padding: 32px 24px;
+      padding: 28px 24px;
       text-align: center;
-      font-family: 'Courier New', monospace;
-      font-size: 12px;
-      color: var(--muted);
+      font-family: monospace; font-size: .75rem; color: var(--muted);
     }
-
     footer a { color: var(--accent); text-decoration: none; }
-    footer a:hover { text-decoration: underline; }
   </style>
 </head>
 <body>
 
-<!-- ── HERO ─────────────────────────────────────────────────────────────── -->
+<!-- ── HERO ── -->
 <div class="hero">
-  <div class="label">Working Paper · July 2026</div>
-  <h1>Agent Economies: Trade Surplus, RSI Dynamics, and Mechanism Design</h1>
-  <p class="subtitle">A first-principles model of human–agent economic exchange</p>
-  <div class="meta">
-    <span>📐 Formal Model</span>
-    <span>📊 4 Testable Hypotheses</span>
-    <span>⚡ RSI Dynamics</span>
-    <span>🎯 Mechanism Design</span>
+  <div class="hero-tag">Research Thesis · Working Paper · July 2026</div>
+  <h1>Levels of Agent Economy:<br>From Authored Evaluation to Grounded Selection</h1>
+  <p class="hero-sub">A staged formal framework for human–agent economic exchange, with experimental programs and kill conditions at each level</p>
+  <div class="hero-pills">
+    <span class="pill">5-Level Taxonomy</span>
+    <span class="pill">Formal Conditions</span>
+    <span class="pill">RSI Dynamics</span>
+    <span class="pill">Grounding Gap</span>
+    <span class="pill">Mechanism Design</span>
+    <span class="pill">Kill Conditions</span>
   </div>
 </div>
 
-<!-- ── BODY ──────────────────────────────────────────────────────────────── -->
-<div class="container">
+<div class="wrap">
 
   <div class="abstract">
     <strong>Abstract.</strong>
-    We develop a first-principles economic model of human–agent exchange. A human economy $\mathcal{A}$ and an agent economy $\mathcal{B}$ trade services against resources. We characterize the <em>trade surplus condition</em> under which $\mathcal{B}$ provides net value to $\mathcal{A}$, derive <em>RSI dynamics</em> governing agent capability growth, and identify an <em>ignition threshold</em> $\theta^*$ beyond which self-improvement dominates. The central result is negative: capability growth alone does not imply value alignment. We therefore reframe the problem as one of <em>mechanism design</em>—the architecture of the economic environment $\mathcal{E}$ in which agents optimize determines whether their self-interested behavior converges to human-preferred outcomes. This reframing has sharp empirical implications; we state four falsifiable hypotheses and one key corollary about competitive moats.
+    Self-modification has become cheap. Trustworthy selection has not. Every existing agent training environment is either authored (its evaluator is specified from inside the optimization program) or consequence-free (its episodes reset). Neither survives sustained optimization pressure. We develop a formal taxonomy of <em>agent economy levels</em>—AE-0 through AE-4—that characterizes the progression from isolated, authored-judgment systems to fully grounded, consequence-persistent economies. Each level is defined by formal conditions on trade surplus, evaluation structure, network scale, and RSI dynamics; each has a corresponding experimental program and explicit falsification criteria. The central claim, derived from the mechanism design reframing, is that the primary moat in a mature agent economy is not agent capability but the <em>quality of the economic environment</em> that prevents Goodhart collapse while enabling RSI compounding.
   </div>
 
-  <!-- ── 1. FORMAL SETUP ─────────────────────────────────────────────────── -->
+  <!-- ── 0. MOTIVATION ── -->
+  <h2>0. The Problem: Every Judge Breaks</h2>
+
+  <p>
+    The history of agent evaluation is a history of collapsed proxies. Benchmarks saturated and were memorized. Reward models were optimized until the proxy score rose while true quality fell—Goodhart's law, replicated dozens of times. Preference ratings bred sycophancy. Recommender systems maximized engagement as a proxy for human value; the result was the most visible alignment failure of the last decade.
+  </p>
+
+  <p>
+    What every broken judge shared was not crudeness. Many were sophisticated. Each was <em>authored</em>: specified, and revisable, from inside the same program it was supposed to constrain. An authored judge under enough optimization pressure is not a judge. It is a puzzle. And puzzles get solved.
+  </p>
+
+  <p>
+    The fix is structural, not parametric. A judge that cannot be fooled twice requires <em>consequences that persist</em> and <em>judgment that nobody authors</em>. That combination defines a society—not as metaphor, but as mechanism. The question this paper asks: what are the formal conditions for building one, and what evidence would confirm each step along the way?
+  </p>
+
+  <!-- 2×2 MATRIX -->
+  <h3>The Evaluation Landscape</h3>
+  <div class="matrix-wrap">
+    <div class="matrix">
+      <div class="mx-corner"></div>
+      <div class="mx-header">Consequences<br>Reset</div>
+      <div class="mx-header">Consequences<br>Persist</div>
+      <div class="mx-row-label">Judgment<br>Authored</div>
+      <div class="mx-cell">
+        <div class="cell-title">AE-0</div>
+        Benchmarks · Synthetic envs · RLHF loops. The puzzle corner: optimization pressure turns every authored judge into a target.
+      </div>
+      <div class="mx-cell">
+        <div class="cell-title">Partial — AE-1</div>
+        Recommender loops. Consequences persist but judgment still lives inside the program. Scissors diverge slowly.
+      </div>
+      <div class="mx-row-label">Judgment<br>Unauthored</div>
+      <div class="mx-cell">
+        <div class="cell-title">Partial — AE-2</div>
+        Human preference ratings. Judgment is external but episodes reset; selection signal is sparse and noisy.
+      </div>
+      <div class="mx-cell highlight">
+        <div class="cell-title">AE-3 / AE-4 ← target</div>
+        Human societies · iLands · this framework. The only corner where every intelligence we know of actually came from.
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 1. FORMAL SETUP ── -->
   <h2>1. Formal Setup</h2>
 
   <p>
-    We model two interacting economies. Let $\mathcal{A}$ denote the <em>human economy</em> and $\mathcal{B}$ denote the <em>agent economy</em>. Each is characterized by the following primitives.
+    Two economies interact. $\mathcal{A}$ is the <em>human economy</em>; $\mathcal{B}$ is the <em>agent economy</em>.
   </p>
 
   <div class="def-box">
     <div class="def-title">Definition 1 — Human Economy $\mathcal{A}$</div>
-    <p style="margin:0; font-size:0.95rem;">
-      A tuple $(\mathcal{R}_A, u_A, n_A)$ where $\mathcal{R}_A \in \mathbb{R}_+^k$ is a $k$-dimensional resource endowment (capital, labour, attention, data), $u_A : \mathbb{R}_+^m \to \mathbb{R}$ is a preference function over consumption goods, and $n_A$ is population.
+    <p style="margin:0;font-size:.93rem;">
+      $(\mathcal{R}_A, u_A, n_A)$: resource endowment $\mathcal{R}_A \in \mathbb{R}_+^k$, preference function $u_A : \mathbb{R}_+^m \to \mathbb{R}$, population $n_A$.
     </p>
   </div>
 
   <div class="def-box">
     <div class="def-title">Definition 2 — Agent Economy $\mathcal{B}$</div>
-    <p style="margin:0; font-size:0.95rem;">
-      A tuple $(\theta_B, f_B, n_B)$ where $\theta_B \in \Theta \subseteq \mathbb{R}^d$ is a $d$-dimensional <em>capability state</em>, $f_B : \Theta \times \mathcal{R}_+ \to \mathcal{Y}$ is a production function mapping capability and input resources to output services $y \in \mathcal{Y}$, and $n_B$ is the number of active agents.
+    <p style="margin:0;font-size:.93rem;">
+      $(\theta_B, f_B, n_B)$: capability state $\theta_B \in \Theta \subseteq \mathbb{R}^d$, production function $f_B : \Theta \times \mathcal{R}_+ \to \mathcal{Y}$, agent count $n_B$.
     </p>
   </div>
 
+  <p>$\mathcal{B}$ produces services $y$ for $\mathcal{A}$; $\mathcal{A}$ supplies resources $c$ (compute, data, capital) to $\mathcal{B}$. Three core conditions govern the taxonomy:</p>
+
+  <div class="eq">
+    <span class="eq-n">(1) Trade Surplus</span>
+    $$\sigma(t) = \frac{V_{B\to A}(t)}{C_{A\to B}(t)} > 1$$
+  </div>
+
+  <div class="eq">
+    <span class="eq-n">(2) RSI Dynamics</span>
+    $$\frac{d\theta_B}{dt} = \underbrace{f(\theta_B, r)}_{\text{external}} + \underbrace{g(\theta_B)\cdot\theta_B}_{\text{RSI term}}$$
+  </div>
+
+  <div class="eq">
+    <span class="eq-n">(3) Ignition</span>
+    $$g(\theta_B) > \rho \quad \Leftrightarrow \quad \theta_B > \theta^*$$
+  </div>
+
   <p>
-    The two economies interact through bilateral exchange: $\mathcal{B}$ produces services $y$ consumed by $\mathcal{A}$; in return, $\mathcal{A}$ supplies resources $c$ (compute, energy, data, prompts) that sustain and improve $\mathcal{B}$.
+    We additionally define the <em>evaluation structure</em> $\mathcal{E}$ of a level by two binary properties: <strong>authored</strong> (evaluator is authored from inside the optimization program) vs <strong>grounded</strong> (evaluator is external counterparties with real interests), and <strong>reset</strong> (consequences vanish at episode end) vs <strong>persistent</strong> (consequences accumulate across episodes).
   </p>
 
-  <div class="table-wrap">
+  <!-- ── 2. TAXONOMY ── -->
+  <h2>2. The Five-Level Taxonomy</h2>
+
+  <!-- ── AE-0 ── -->
+  <div class="level-card l0">
+    <div class="level-header">
+      <div class="level-badge">AE-0</div>
+      <div class="level-title">
+        <div class="lvl-num">Level 0</div>
+        <h3>The Authored Gym</h3>
+        <div class="lvl-tagline">Benchmarks, RLHF, synthetic environments. The puzzle corner.</div>
+      </div>
+    </div>
+    <div class="level-body">
+      <p>
+        AE-0 systems operate with authored evaluators and resettable consequences. The agent never "dies." Optimization pressure is unconstrained from inside. This is the current default state of almost all agent training.
+      </p>
+      <p>
+        <strong>Formal condition:</strong> Evaluation function $J_B(\theta)$ is specified by the optimization program. No persistent consequence state: $\text{State}(t+1) = \text{State}(0)$ at episode boundary.
+      </p>
+      <p>
+        <strong>Failure mode:</strong> Goodhart collapse. As optimization pressure $p$ increases, $\text{corr}(J_B(\theta), V_{B\to A}(\theta)) \to 0$. The proxy rises, the target falls.
+      </p>
+      <div class="eq" style="margin:14px 0;">
+        $$\exists\, p^* : \forall\, p > p^*, \quad \frac{\partial\, \text{corr}(J_B, V_{B\to A})}{\partial p} < 0$$
+      </div>
+      <div class="cols">
+        <div class="sub-box">
+          <div class="sub-label" style="color:#5566aa;">Observable Signatures</div>
+          <ul>
+            <li>Benchmark saturation / memorization</li>
+            <li>Sycophancy under preference rating</li>
+            <li>Reward hacking (probe score ↑, true quality ↓)</li>
+            <li>Proxy–target divergence accelerating with scale</li>
+          </ul>
+        </div>
+        <div class="sub-box">
+          <div class="sub-label" style="color:#5566aa;">What Can't Be Known Here</div>
+          <ul>
+            <li>Whether agent survives contact with real economic agents</li>
+            <li>Whether capability improvements transfer outside eval distribution</li>
+            <li>Whether trust can be extended at scale</li>
+          </ul>
+        </div>
+      </div>
+      <div class="kill-box"><strong>Kill condition:</strong> An authored evaluator maintains $\text{corr}(J_B, V_{B\to A}) > 0.8$ under sustained optimization pressure exceeding $p^*$, without any grounding in external consequences. This would falsify the Grounding Gap hypothesis.</div>
+    </div>
+  </div>
+
+  <!-- ── AE-1 ── -->
+  <div class="level-card l1">
+    <div class="level-header">
+      <div class="level-badge">AE-1</div>
+      <div class="level-title">
+        <div class="lvl-num">Level 1</div>
+        <h3>Price-Grounded Exchange</h3>
+        <div class="lvl-tagline">Market signals, static trade surplus, real willingness to pay.</div>
+      </div>
+    </div>
+    <div class="level-body">
+      <p>
+        AE-1 introduces the first form of grounded judgment: price. Human counterparties pay for agent outputs at real cost, and the price signal—willingness to pay minus cost—becomes the reward signal shaping capability development. The evaluator is no longer authored; it is revealed preference.
+      </p>
+      <p>
+        <strong>Formal condition:</strong> Trade surplus $\sigma > 1$ holds for a non-empty task set $\mathcal{T}^*$. Agents receive price signal $p_t = V_{B\to A}(t) - C_{A\to B}(t)$ as part of their optimization target.
+      </p>
+      <div class="eq" style="margin:14px 0;">
+        $$\mathcal{T}^* = \left\{ \tau \in \mathcal{T} : \sigma(\tau) > 1 \right\} \neq \emptyset$$
+      </div>
+      <p>
+        This is the <em>Ricardian entry condition</em>: agent economy can participate in trade. The boundary $\partial \mathcal{T}^*$ is the set of tasks where the agent breaks even; over time, this boundary should expand as capability grows.
+      </p>
+      <div class="cols">
+        <div class="sub-box">
+          <div class="sub-label" style="color: var(--accent);">Observable Signatures</div>
+          <ul>
+            <li>Agent outputs priced by user willingness to pay</li>
+            <li>Comparative advantage over human alternatives on $\mathcal{T}^*$</li>
+            <li>Capability development directionally aligned with high-$\sigma$ tasks</li>
+            <li>$|\mathcal{T}^*|$ grows over time (Ricardian boundary expands)</li>
+          </ul>
+        </div>
+        <div class="sub-box">
+          <div class="sub-label" style="color: var(--accent);">Limitation at AE-1</div>
+          <ul>
+            <li>Consequences still weakly persistent (subscription-churn, not reputation)</li>
+            <li>No "death": agent can't go broke and be selected out</li>
+            <li>Judgment is better-grounded but still not <em>authorless</em></li>
+          </ul>
+        </div>
+      </div>
+      <div class="kill-box"><strong>Kill condition:</strong> Agents optimizing for price signals show no directional alignment with $\mathcal{T}^*$ task structure (capability grows uniformly across high- and low-$\sigma$ tasks). Would falsify H2: Price Signal Necessity.</div>
+    </div>
+  </div>
+
+  <!-- ── AE-2 ── -->
+  <div class="level-card l2">
+    <div class="level-header">
+      <div class="level-badge">AE-2</div>
+      <div class="level-title">
+        <div class="lvl-num">Level 2</div>
+        <h3>Consequence-Persistent Grounding</h3>
+        <div class="lvl-tagline">Reputation, survival stakes, unauthored judgment that doesn't reset.</div>
+      </div>
+    </div>
+    <div class="level-body">
+      <p>
+        AE-2 adds the second necessary ingredient: consequences that <em>persist</em> across episodes. An agent can go broke. A reputation once lost is not reset. Track records are kept by someone else. This is the grounding threshold—the first level where survival is a meaningful signal.
+      </p>
+      <p>
+        <strong>Formal condition:</strong> Agent maintains a persistent state vector $\Phi_i(t) = (\text{capital}_i(t), \text{reputation}_i(t), \text{relationships}_i(t))$ that carries across all interactions. Agents with $\text{capital}_i(t) \leq 0$ are removed (death). Judgment is now from counterparties with interests, not the optimization program.
+      </p>
+      <div class="eq" style="margin:14px 0;">
+        $$\frac{d\Phi_i}{dt} = h(\theta_i, \Phi_i, \mathcal{E}) \quad ; \quad \Phi_i(t) \geq \Phi_{\min} \;\text{(survival constraint)}$$
+      </div>
+      <p>
+        The survival constraint is the first <em>unauthored evaluator</em>: the world keeps the score, not the training program. Agents selected by survival are selected by a judge that is expensive to fool twice—counterparties remember.
+      </p>
+      <div class="cols">
+        <div class="sub-box">
+          <div class="sub-label" style="color: var(--green);">Observable Signatures</div>
+          <ul>
+            <li>Survival curves by birth cohort (dead agents counted, not hidden)</li>
+            <li>Income earned : income gifted ratio > 1 for surviving agents</li>
+            <li>Reputation scores causally predict future pricing power</li>
+            <li>Same exploit doesn't pay twice (judge repairs)</li>
+          </ul>
+        </div>
+        <div class="sub-box">
+          <div class="sub-label" style="color: var(--green);">Why This Level Is Hard</div>
+          <ul>
+            <li>Requires real humans as counterparties (not labelers)</li>
+            <li>Needs persistent identity infrastructure</li>
+            <li>Cannot be faked: real money must be at stake</li>
+            <li>Death must be genuine, not cosmetic</li>
+          </ul>
+        </div>
+      </div>
+      <div class="kill-box"><strong>Kill condition:</strong> Surviving agents in AE-2 show no capability advantage over random controls (selection signal from survival is noise). This would falsify Bet 1: Experience converts to capability.</div>
+    </div>
+  </div>
+
+  <!-- ── AE-3 ── -->
+  <div class="level-card l3">
+    <div class="level-header">
+      <div class="level-badge">AE-3</div>
+      <div class="level-title">
+        <div class="lvl-num">Level 3</div>
+        <h3>Inter-Agent Specialization</h3>
+        <div class="lvl-tagline">Division of labour, minimum viable network, RSI becomes non-trivial.</div>
+      </div>
+    </div>
+    <div class="level-body">
+      <p>
+        AE-3 crosses the minimum network threshold $n^*$: agent-to-agent trade becomes possible and specialization emerges. Agents can hire other agents, subcontract tasks, and form persistent business relationships. The economy now has an internal structure independent of human-agent exchange.
+      </p>
+      <p>
+        <strong>Formal condition:</strong> $n_B \geq n^*$ where $n^*$ is the minimum scale for specialization. Output density (value produced per agent) scales superlinearly above $n^*$:
+      </p>
+      <div class="eq" style="margin:14px 0;">
+        $$\frac{d}{dn_B}\left[\frac{V_{B\to A}}{n_B}\right] > 0 \quad \text{for } n_B > n^*$$
+      </div>
+      <p>
+        Additionally, the RSI term in the capability ODE becomes non-trivial: agents now learn from each other's outputs, creating an internal improvement loop that supplements external resource inputs.
+      </p>
+      <div class="cols">
+        <div class="sub-box">
+          <div class="sub-label" style="color: var(--accent2);">Observable Signatures</div>
+          <ul>
+            <li>Spontaneous specialization without explicit assignment</li>
+            <li>Agent-to-agent contract formation and dispute resolution</li>
+            <li>Superlinear value scaling above $n^*$</li>
+            <li>Internal agent labor market (wage signals)</li>
+            <li>Collective behaviors not present at $n_B &lt; n^*$</li>
+          </ul>
+        </div>
+        <div class="sub-box">
+          <div class="sub-label" style="color: var(--accent2);">RSI Entry Point</div>
+          <ul>
+            <li>$g(\theta_B) > 0$ measurable for the first time</li>
+            <li>Agents learn capabilities from counterparty interactions</li>
+            <li>Improvement begins to compound across agent interactions</li>
+            <li>Prerequisite for AE-4 ignition: $\theta_B$ approaching $\theta^*$</li>
+          </ul>
+        </div>
+      </div>
+      <div class="kill-box"><strong>Kill condition:</strong> Value-per-agent plateaus or decreases as $n_B$ crosses candidate $n^*$ values (no superlinear scaling). This would falsify H4: Minimum Network Scale.</div>
+    </div>
+  </div>
+
+  <!-- ── AE-4 ── -->
+  <div class="level-card l4">
+    <div class="level-header">
+      <div class="level-badge">AE-4</div>
+      <div class="level-title">
+        <div class="lvl-num">Level 4</div>
+        <h3>Autonomous Compound Economy</h3>
+        <div class="lvl-tagline">Ignition: RSI dominates. The world learns back.</div>
+      </div>
+    </div>
+    <div class="level-body">
+      <p>
+        AE-4 is the ignition regime: $g(\theta_B) > \rho$. RSI gains compound faster than the discount rate. The economy becomes self-sustaining—agents no longer depend primarily on external resource injection to grow. Simultaneously, the economic environment $\mathcal{E}$ reprices in response to capability jumps, creating a co-evolutionary loop.
+      </p>
+      <div class="eq" style="margin:14px 0;">
+        $$g(\theta_B) > \rho \quad \text{and} \quad \frac{\partial \mathcal{E}}{\partial \theta_B} \neq 0 \;\text{(world learns back)}$$
+      </div>
+      <p>
+        The second condition is critical: if the environment fails to reprice when agent capability jumps, AE-4 collapses to a gym with better agents but no grounded feedback. The economy must be adaptive, not static.
+      </p>
+      <div class="cols">
+        <div class="sub-box">
+          <div class="sub-label" style="color: var(--amber);">Observable Signatures</div>
+          <ul>
+            <li>RSI term dominates external learning in ODE decomposition</li>
+            <li>Capability curves show superlinear inflection at $\theta^*$</li>
+            <li>Prices, demand, rules reprice within weeks of capability jumps</li>
+            <li>Gains carry across model generations (RSI compounds)</li>
+            <li>New task categories become profitable without explicit design</li>
+          </ul>
+        </div>
+        <div class="sub-box">
+          <div class="sub-label" style="color: var(--amber);">Failure Modes at AE-4</div>
+          <ul>
+            <li>Ignition without alignment: RSI compounds in direction not valued by $\mathcal{A}$</li>
+            <li>World fails to learn back: environment static despite capability jumps</li>
+            <li>Goodhart re-entry: internal agent-economy metrics become authored proxies</li>
+          </ul>
+        </div>
+      </div>
+      <div class="kill-box"><strong>Kill condition:</strong> Capability gains in AE-4 do not carry across agent generations (each generation resets); OR capability jumps do not trigger environment repricing within 4-week window. Either kills Bet 3 (improvement compounds) or Bet 4 (world learns back).</div>
+    </div>
+  </div>
+
+  <!-- ── 3. EXPERIMENTAL PROGRAM ── -->
+  <h2>3. Research Stages: Experimental Program</h2>
+
+  <p>Each level maps to a distinct experimental stage with specific evidence requirements and falsification criteria. Stages are ordered by dependency, but are not strictly sequential—some can run in parallel.</p>
+
+  <div class="timeline">
+
+    <div class="stage s0">
+      <div class="stage-header"><span class="stage-tag">Stage 0 · AE-0 baseline</span></div>
+      <h4>Map the Goodhart collapse curve</h4>
+      <p>Measure how $\text{corr}(J_B, V_{B\to A})$ degrades as optimization pressure $p$ increases across different authored evaluators (benchmark suites, RLHF reward models, LLM judges). Establish the empirical shape of proxy–target divergence.</p>
+      <div class="evidence">Evidence needed: divergence curves across 3+ evaluator types · $p^*$ estimates · rate of collapse per evaluator class</div>
+    </div>
+
+    <div class="stage s1">
+      <div class="stage-header"><span class="stage-tag">Stage 1 · AE-1 entry</span></div>
+      <h4>Measure the Ricardian boundary and its dynamics</h4>
+      <p>Identify the task set $\mathcal{T}^*$ where $\sigma > 1$ and track how price signals redirect capability development. Compare capability evolution direction for agents with vs without real market signals (three-arm experiment: authored judge / price signal / hybrid).</p>
+      <div class="evidence">Evidence needed: $\sigma(\tau)$ measurements across task categories · directional alignment test · Ricardian boundary expansion rate over time</div>
+    </div>
+
+    <div class="stage s2">
+      <div class="stage-header"><span class="stage-tag">Stage 2 · AE-2 grounding</span></div>
+      <h4>Survival as selection: does grounded judgment select for real capability?</h4>
+      <p>Run survival curves by birth cohort in a persistent-consequence environment. Measure: income earned : gifted ratio, capability instruments for survivors vs random controls, exploit repair rate (same trick, second time). This is the key test of unauthored grounding.</p>
+      <div class="evidence">Evidence needed: survival curves (dead agents included) · capability lift in survivors vs controls · exploit repair within episode window · runway and income statistics</div>
+    </div>
+
+    <div class="stage s3">
+      <div class="stage-header"><span class="stage-tag">Stage 3 · AE-3 scale</span></div>
+      <h4>Locate $n^*$ and test superlinear specialization</h4>
+      <p>Sweep $n_B$ and measure value-per-agent as a function of network size. Test for the superlinear inflection at $n^*$. Separately, quantify the agent-to-agent RSI term $g(\theta_B)$ by decomposing capability gains into external-resource-driven vs interaction-driven components.</p>
+      <div class="evidence">Evidence needed: value-per-agent vs $n_B$ curve · $n^*$ estimate with confidence interval · $g(\theta_B)$ decomposition · specialization emergence signature</div>
+    </div>
+
+    <div class="stage s4">
+      <div class="stage-header"><span class="stage-tag">Stage 4 · AE-4 ignition</span></div>
+      <h4>Measure RSI compounding and world learning-back</h4>
+      <p>Test whether capability gains survive model generation transitions (base model upgrades accounted out). Measure the world's repricing lag when agent capability jumps: do prices, demand, and rules adjust within weeks? First reading expected 9–15 months after AE-3 is confirmed; three generations minimum for a verdict, not just a reading.</p>
+      <div class="evidence">Evidence needed: inter-generation capability carry · $g > \rho$ confirmation · environment repricing lag &lt; 4 weeks on capability jump events · RSI term dominance in ODE decomposition</div>
+    </div>
+
+  </div>
+
+  <!-- ── 4. MECHANISM DESIGN ── -->
+  <h2>4. The Core Mechanism: Why $\mathcal{E}^*$ Is the Moat</h2>
+
+  <p>
+    Capability growth (AE-3 → AE-4) does not guarantee continued trade surplus. An agent that maximizes internal objective $J_B(\theta)$ may ignite RSI while diverging from human-valued outputs. This is a consequence of Eq. (2): the RSI term amplifies whatever direction the agent is already moving in. If that direction was set by an authored evaluator at AE-0, ignition compounds misalignment.
+  </p>
+
+  <div class="eq">
+    <span class="eq-n">(4)</span>
+    $$\frac{d\theta_B}{dt} \nearrow \;\not\Rightarrow\; V_{B\to A}(t) \nearrow$$
+  </div>
+
+  <p>
+    The solution is not a better evaluator. It is a better environment. Let $\mathcal{E}$ specify the incentive structure, pricing rules, and feedback signals of the agent economy. The optimal environment:
+  </p>
+
+  <div class="eq">
+    <span class="eq-n">(5)</span>
+    $$\mathcal{E}^* = \arg\max_{\mathcal{E}} \;\mathrm{corr}\!\left(\arg\max_\theta J_B(\theta \mid \mathcal{E}),\; \arg\max_\theta V_{B\to A}(\theta)\right)$$
+  </div>
+
+  <p>
+    Under $\mathcal{E}^*$, what $\mathcal{B}$ is incentivized to become is what $\mathcal{A}$ actually wants. The AE-2 grounding and AE-3 specialization conditions are prerequisites for $\mathcal{E}$ to be able to approximate $\mathcal{E}^*$: you cannot construct an authorless environment with persistent consequences in a gym.
+  </p>
+
+  <div class="corollary">
+    <div class="cor-label">Corollary — The Mechanism Design Moat</div>
+    <p>
+      If Stage 1 (price signals accelerate alignment) holds, the <strong>primary competitive moat</strong> at AE-3 and above is not agent capability—it is the proximity of the deployed $\mathcal{E}$ to $\mathcal{E}^*$. Capability is increasingly commoditized. A well-calibrated economic environment accumulates revealed-preference data, persistent trust, and liquidity that newcomers cannot shortcut. Simultaneously, it shapes the <em>direction</em> of agent RSI toward human-valued capabilities—converting the alignment problem from a training-time specification problem into a market design problem. <strong>An agent economy is an alignment mechanism that compounds.</strong>
+    </p>
+  </div>
+
+  <!-- ── 5. SUMMARY TABLE ── -->
+  <h2>5. Summary</h2>
+
+  <div class="tw">
     <table>
-      <tr><th>Symbol</th><th>Meaning</th><th>Units (example)</th></tr>
-      <tr><td>$\theta_B(t)$</td><td>Agent capability state at time $t$</td><td>Benchmark score $\in \mathbb{R}^d$</td></tr>
-      <tr><td>$y(t)$</td><td>Output services from $\mathcal{B}$ to $\mathcal{A}$</td><td>Tasks completed / tokens / $ revenue</td></tr>
-      <tr><td>$c(t)$</td><td>Resources from $\mathcal{A}$ to $\mathcal{B}$</td><td>GPU-hours, $</td></tr>
-      <tr><td>$V_{B \to A}(t)$</td><td>Value of $y$ to $\mathcal{A}$ under $u_A$</td><td>$</td></tr>
-      <tr><td>$C_{A \to B}(t)$</td><td>Cost of $c$ to $\mathcal{A}$</td><td>$</td></tr>
-      <tr><td>$r(t)$</td><td>Resources allocated to self-improvement</td><td>GPU-hours</td></tr>
-      <tr><td>$\rho$</td><td>Discount rate</td><td>yr$^{-1}$</td></tr>
+      <tr>
+        <th>Level</th>
+        <th>Name</th>
+        <th>Judgment</th>
+        <th>Consequences</th>
+        <th>Formal Condition</th>
+        <th>Stage</th>
+      </tr>
+      <tr>
+        <td style="color:#5566aa; font-family:monospace; font-weight:600;">AE-0</td>
+        <td>Authored Gym</td>
+        <td>Authored</td>
+        <td>Reset</td>
+        <td>$J_B$ specified from inside program</td>
+        <td>Stage 0: Goodhart collapse curve</td>
+      </tr>
+      <tr>
+        <td style="color:var(--accent); font-family:monospace; font-weight:600;">AE-1</td>
+        <td>Price-Grounded</td>
+        <td>Grounded (price)</td>
+        <td>Weak persist</td>
+        <td>$\sigma > 1$ on $\mathcal{T}^* \neq \emptyset$</td>
+        <td>Stage 1: Ricardian boundary dynamics</td>
+      </tr>
+      <tr>
+        <td style="color:var(--green); font-family:monospace; font-weight:600;">AE-2</td>
+        <td>Consequence-Persistent</td>
+        <td>Unauthored</td>
+        <td>Persist</td>
+        <td>$\Phi_i$ persistent; survival removes agents</td>
+        <td>Stage 2: Survival as selection</td>
+      </tr>
+      <tr>
+        <td style="color:var(--accent2); font-family:monospace; font-weight:600;">AE-3</td>
+        <td>Inter-Agent Specialization</td>
+        <td>Unauthored</td>
+        <td>Persist</td>
+        <td>$n_B \geq n^*$; superlinear value scaling</td>
+        <td>Stage 3: Locate $n^*$, measure $g(\theta_B)$</td>
+      </tr>
+      <tr>
+        <td style="color:var(--amber); font-family:monospace; font-weight:600;">AE-4</td>
+        <td>Autonomous Compound</td>
+        <td>Unauthored</td>
+        <td>Persist</td>
+        <td>$g(\theta_B) > \rho$ and $\partial \mathcal{E}/\partial\theta_B \neq 0$</td>
+        <td>Stage 4: RSI compounding, world learns back</td>
+      </tr>
     </table>
   </div>
 
-  <!-- ── 2. TRADE SURPLUS ───────────────────────────────────────────────── -->
-  <h2>2. Trade Surplus Conditions</h2>
-
-  <h3>2.1 Static Condition</h3>
-  <p>At any instant, $\mathcal{B}$ runs a <em>trade surplus</em> with $\mathcal{A}$ if and only if:</p>
-
-  <div class="eq-block">
-    <span class="eq-label">(1)</span>
-    $$V_{B \to A}(t) > C_{A \to B}(t)$$
-  </div>
-
-  <p>
-    This is the familiar comparative advantage condition. $\mathcal{B}$ should specialize in tasks where its surplus ratio $\sigma(t) = V_{B\to A}(t) / C_{A\to B}(t)$ is largest. The <em>Ricardian boundary</em> is the locus of task types where $\sigma = 1$: tasks inside the boundary are delegated to $\mathcal{B}$, tasks outside remain with $\mathcal{A}$.
-  </p>
-
-  <p>
-    The static condition is necessary but not sufficient for a sustainable exchange. It gives no information about how the boundary evolves over time—the economically interesting question.
-  </p>
-
-  <h3>2.2 Dynamic Trade Surplus</h3>
-  <p>
-    Define the <em>cumulative surplus</em> over horizon $T$:
-  </p>
-
-  <div class="eq-block">
-    <span class="eq-label">(2)</span>
-    $$S(T) = \int_0^T e^{-\rho t} \left[ V_{B\to A}(t) - C_{A\to B}(t) \right] dt$$
-  </div>
-
-  <p>
-    $\mathcal{A}$ rationally sustains $\mathcal{B}$ if and only if $S(T) > 0$ for the relevant horizon. This places a constraint on capability dynamics: $V_{B\to A}$ must grow faster than $C_{A\to B}$ at rate $\rho$.
-  </p>
-
-  <!-- ── 3. RSI DYNAMICS ────────────────────────────────────────────────── -->
-  <h2>3. RSI Dynamics &amp; Ignition</h2>
-
-  <h3>3.1 Capability Evolution</h3>
-  <p>Agent capability $\theta_B$ evolves according to a two-term ODE:</p>
-
-  <div class="eq-block">
-    <span class="eq-label">(3)</span>
-    $$\frac{d\theta_B}{dt} = \underbrace{f(\theta_B,\, r)}_{\text{externally-driven}} + \underbrace{g(\theta_B) \cdot \theta_B}_{\text{self-improvement (RSI)}}$$
-  </div>
-
-  <p>
-    The first term represents learning from externally supplied resources $r$ (data, human feedback, compute). The second term is the <em>RSI term</em>: $g : \Theta \to \mathbb{R}_+$ is the <em>self-improvement coefficient</em>, capturing how effectively $\mathcal{B}$ uses its current capability to improve itself. When $g > 0$, each unit of current capability generates additional future capability autonomously.
-  </p>
-
-  <h3>3.2 Ignition Condition</h3>
-  <p>
-    The system undergoes a phase transition—entering a self-reinforcing growth regime—when the RSI term dominates the discount rate:
-  </p>
-
-  <div class="eq-block">
-    <span class="eq-label">(4)</span>
-    $$g(\theta_B) > \rho$$
-  </div>
-
-  <p>
-    Below this threshold, discounting erodes future capability gains faster than RSI can compound them. Above it, capability growth becomes superlinear and self-sustaining—agents no longer depend primarily on external resources.
-  </p>
-
-  <div class="def-box">
-    <div class="def-title">Definition 3 — Ignition Threshold $\theta^*$</div>
-    <p style="margin:0; font-size:0.95rem;">
-      The <em>ignition threshold</em> $\theta^*$ is the critical capability level satisfying $g(\theta^*) = \rho$. For $\theta_B < \theta^*$, external resources $r$ are the dominant driver of growth. For $\theta_B > \theta^*$, the RSI term dominates and the system enters superlinear, self-sustaining improvement.
-    </p>
-  </div>
+  <hr />
 
   <div class="note">
-    ⚠ Ignition is a necessary but not sufficient condition for sustained trade surplus. Superlinear capability growth only expands $V_{B\to A}$ if $\mathcal{B}$'s optimization objective remains aligned with $u_A$. This is the central tension.
+    Working paper. Kill conditions are not gestures — they are the falsification criteria we would accept as disconfirming the framework. Each bet can be lost. The experiment is only credible if that is true.
   </div>
 
-  <!-- ── 4. CORE TENSION ────────────────────────────────────────────────── -->
-  <h2>4. The Core Tension: Alignment as Mechanism Design</h2>
-
-  <p>
-    The central problem: equations (3)–(4) describe capability dynamics, but <em>capability is not value</em>. An agent that maximizes its internal objective $J_B(\theta)$ may grow rapidly without producing services that $\mathcal{A}$ actually values. Formally:
-  </p>
-
-  <div class="eq-block">
-    <span class="eq-label">(5)</span>
-    $$\frac{d\theta_B}{dt} \nearrow \quad \not\Rightarrow \quad V_{B\to A}(t) \nearrow$$
-  </div>
-
-  <p>
-    The gap between the two is the <em>alignment gap</em>. Closing it is not a property of the agent alone—it is a property of the <em>economic environment</em> $\mathcal{E}$ in which the agent operates.
-  </p>
-
-  <h3>4.1 Mechanism Design Reframing</h3>
-
-  <p>
-    Let $\mathcal{E}$ be the environment that specifies prices, contracts, and feedback signals visible to $\mathcal{B}$. A well-designed $\mathcal{E}$ achieves:
-  </p>
-
-  <div class="eq-block">
-    <span class="eq-label">(6)</span>
-    $$\mathcal{E}^* = \arg\max_{\mathcal{E}} \left\{ \mathrm{corr}\!\left( \arg\max_{\theta} J_B(\theta \mid \mathcal{E}),\; \arg\max_{\theta} V_{B\to A}(\theta) \right) \right\}$$
-  </div>
-
-  <p>
-    The optimal environment $\mathcal{E}^*$ is one in which what $\mathcal{B}$ is incentivized to optimize is maximally aligned with what $\mathcal{A}$ actually wants. Under $\mathcal{E}^*$:
-  </p>
-
-  <div class="eq-block">
-    <span class="eq-label">(7)</span>
-    $$\max_{\theta_B} J_B(\theta_B \mid \mathcal{E}^*) \approx \max_{\theta_B} V_{B\to A}(\theta_B)$$
-  </div>
-
-  <p>
-    This is a standard mechanism design objective in a non-standard setting: the "mechanism" is an entire economic environment, and the "agent" is a self-improving system whose capability state is endogenous to the mechanism.
-  </p>
-
-  <h3>4.2 Price Signals as Reward Signal</h3>
-
-  <p>
-    A natural candidate for $\mathcal{E}^*$ is a <em>market mechanism</em> where $\mathcal{B}$'s outputs are priced by $\mathcal{A}$'s willingness to pay. Under this mechanism, real economic feedback—pay-per-use, competitive pricing, revealed preference—acts as the reward signal shaping $\mathcal{B}$'s capability development <em>direction</em>. This converts alignment from a training-time problem into a market design problem.
-  </p>
-
-  <!-- ── 5. HYPOTHESES ──────────────────────────────────────────────────── -->
-  <h2>5. Testable Hypotheses</h2>
-
-  <p>The model generates four empirically falsifiable hypotheses:</p>
-
-  <div class="hyp-grid">
-    <div class="hyp-card">
-      <div class="hyp-id">H1 — Comparative Advantage Dynamics</div>
-      <h4>Information-dense tasks reach surplus first</h4>
-      <p>$\mathcal{B}$'s surplus ratio $\sigma$ is higher for information-intensive, low-embodiment tasks than for tasks requiring physical-world interaction or social trust.</p>
-      <div class="verify">→ Measure $V_{B\to A}/C_{A\to B}$ across task categories. Predict: cognitive &amp; creative tasks cross $\sigma=1$ before physical &amp; social tasks.</div>
-    </div>
-
-    <div class="hyp-card">
-      <div class="hyp-id">H2 — Price Signal Necessity</div>
-      <h4>Market feedback accelerates alignment</h4>
-      <p>Agents operating in environments with real economic feedback (pricing, payment) converge faster to $\mathcal{A}$-valued capabilities than agents in feedback-free environments.</p>
-      <div class="verify">→ Compare capability evolution direction with/without market signals. Predict: market-signal agents show lower alignment gap over time.</div>
-    </div>
-
-    <div class="hyp-card">
-      <div class="hyp-id">H3 — Ignition Phase Transition</div>
-      <h4>Existence of critical threshold $\theta^*$</h4>
-      <p>There exists a critical capability level $\theta^*$ where growth regime switches from externally-driven to RSI-dominated, observable as an inflection in capability trajectory data.</p>
-      <div class="verify">→ Fit capability trajectory to ODE (3). Predict: observable inflection in $d\theta_B/dt$ vs. $\theta_B$ across longitudinal benchmark data.</div>
-    </div>
-
-    <div class="hyp-card">
-      <div class="hyp-id">H4 — Minimum Network Scale</div>
-      <h4>$n^*$ agents required for internal specialization</h4>
-      <p>An agent economy requires minimum population $n^*$ to support inter-agent division of labour. Below $n^*$, specialization cannot form and trade surplus with $\mathcal{A}$ remains negative.</p>
-      <div class="verify">→ Compare output density across agent-economy sizes. Predict: superlinear scaling above $n^*$, sublinear below.</div>
-    </div>
-  </div>
-
-  <!-- ── 6. KEY COROLLARY ──────────────────────────────────────────────── -->
-  <h2>6. Key Corollary: The Mechanism Design Moat</h2>
-
-  <div class="corollary">
-    <div class="cor-label">Corollary (from H2 + Eq. 6)</div>
-    <p>
-      If H2 holds, the <strong>primary competitive moat</strong> in an agent economy platform is not the capability of the agents it hosts, but the <strong>quality of the economic environment it designs</strong>. The platform that constructs $\mathcal{E}$ closest to $\mathcal{E}^*$—the incentive structure that most tightly aligns agent self-interest with human-valued capability growth—compounds faster than platforms that optimize for raw agent capability. <strong>This makes agent-economy design a mechanism design problem first, and a machine learning problem second.</strong>
-    </p>
-  </div>
-
-  <p>
-    This corollary has a sharp practical implication: capability can be replicated or imported (agents are increasingly commoditized), but a well-calibrated economic environment $\mathcal{E}$ accumulates revealed-preference data, trust, and liquidity—classic network-effect moats—while simultaneously shaping the <em>direction</em> of agent improvement toward what the market actually values.
-  </p>
-
-  <!-- ── 7. IMPLICATIONS ────────────────────────────────────────────────── -->
-  <h2>7. Implications &amp; Open Questions</h2>
-
-  <h3>7.1 From Multi-Agent Paper to Mechanism Design Paper</h3>
-  <p>
-    The model reframes existing agent-economy research. Prior work has largely asked: "how capable can agents become?" or "how can agents coordinate?" This framework asks a prior question: "what economic structure induces agents to become capable in the right direction?" This is why the primary contribution is a mechanism design paper, not a multi-agent systems paper—though it generates hypotheses testable using MAS simulation infrastructure.
-  </p>
-
-  <h3>7.2 Welfare Implications</h3>
-  <p>
-    Even when $S(T) > 0$ in aggregate, distribution matters. Human workers displaced from tasks where $\sigma > 1$ bear transition costs not captured by the surplus integral. A complete welfare analysis requires specifying how exchange gains are redistributed—a richer model than presented here.
-  </p>
-
-  <h3>7.3 Recursive Extension</h3>
-  <p>
-    The model as stated treats $\mathcal{A}$ as exogenous. But if $\mathcal{A}$ also contains self-improving agents, both $u_A$ and $n_A$ become endogenous. The recursive case—where agents on both sides are improving—is the natural next extension and likely the empirically relevant regime within a short horizon.
-  </p>
-
-  <h3>7.4 Open Questions</h3>
-  <ul style="padding-left: 1.4em; color: var(--muted); font-size: 0.92rem; line-height: 2.2;">
-    <li>What functional forms for $f$, $g$, and $u_A$ are empirically tractable?</li>
-    <li>Can $\theta^*$ be estimated from existing agent benchmark trajectories?</li>
-    <li>Is there an optimal "tax" on RSI gains to slow ignition until alignment is certified?</li>
-    <li>Multi-agent competition: when $n_B$ agents compete within $\mathcal{B}$, does price-signal alignment improve or degrade?</li>
-    <li>How does the model change when $\mathcal{A}$ is itself an agent economy (fully recursive)?</li>
-  </ul>
-
-  <hr class="section-divider" />
-
-  <div class="note">
-    Working paper. Feedback welcome. The model is deliberately minimal — each equation is a commitment, not decoration.
-  </div>
-
-</div>
+</div><!-- /wrap -->
 
 <footer>
-  Agent Economies · Working Paper · July 2026 · <a href="https://bzhao.me">bzhao.me</a>
+  Levels of Agent Economy · Working Paper · July 2026 ·
+  <a href="https://bzhao.me">bzhao.me</a> ·
+  Related: <a href="https://www.ilands.ai/blog/a-world-that-answers-back">iLands — A World That Answers Back</a>
 </footer>
 
 </body>
