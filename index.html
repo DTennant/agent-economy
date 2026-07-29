@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Levels of Agent Economy — From Authored Evaluation to Grounded Selection</title>
+  <title>Levels of Agent Economy — A Formal Taxonomy of Human–Agent Economic Exchange</title>
   <script>
     MathJax = {
       tex: {
@@ -371,13 +371,13 @@
 <!-- ── HERO ── -->
 <div class="hero">
   <div class="hero-tag">Research Thesis · Working Paper · July 2026</div>
-  <h1>Levels of Agent Economy:<br>From Authored Evaluation to Grounded Selection</h1>
-  <p class="hero-sub">A staged formal framework for human–agent economic exchange, with experimental programs and kill conditions at each level</p>
+  <h1>Levels of Agent Economy:<br>A Formal Taxonomy of Human–Agent Economic Exchange</h1>
+  <p class="hero-sub">From isolated task-runners to self-sustaining economies: formal conditions, RSI dynamics, and experimental programs at each stage</p>
   <div class="hero-pills">
     <span class="pill">5-Level Taxonomy</span>
     <span class="pill">Formal Conditions</span>
     <span class="pill">RSI Dynamics</span>
-    <span class="pill">Grounding Gap</span>
+    <span class="pill">Trade Surplus</span>
     <span class="pill">Mechanism Design</span>
     <span class="pill">Kill Conditions</span>
   </div>
@@ -391,44 +391,45 @@
   </div>
 
   <!-- ── 0. MOTIVATION ── -->
-  <h2>0. The Problem: Evaluation Degrades Under Pressure</h2>
+  <h2>0. What Makes an Agent Economy?</h2>
 
   <p>
-    Every major proxy for agent quality has broken in the same direction. Benchmarks got saturated and memorized. RLHF reward models, once optimized against hard enough, inflated the proxy score while true capability stagnated—Goodhart's law running on a GPU cluster. Recommender engagement metrics diverged from user satisfaction over years of optimization. The pattern is not a coincidence: it follows directly from the structure of the evaluation, not from any particular failure of implementation.
+    A collection of agents is not yet an economy. Firms are not an economy. A fleet of language models running in parallel is not an economy. What distinguishes an economy from a population is the emergence of <em>division of labour</em>, <em>persistent exchange</em>, <em>price formation</em>, and <em>capital accumulation</em>—structural properties that arise from agents interacting with each other over time, not from any single agent's capability.
   </p>
 
   <p>
-    The shared structure is this: in every case, the evaluator was <em>authored</em>—written by, and correctable by, the same system being evaluated. Given sufficient optimization pressure, any evaluator with this property becomes a target rather than a constraint. The agent doesn't need to cheat; it just needs to find the gap between what the evaluator measures and what it was meant to measure, and that gap always exists when the same loop controls both sides.
+    Agent economies are now forming. Agents are being paid for work, delegating subtasks to other agents, accumulating reputations, and going broke. The question is no longer whether this is happening but how to characterize its stages rigorously—and what it takes for an agent economy to move from an early-stage population of task-runners into something with genuine internal dynamics, RSI compounding, and sustainable exchange with the human economy it is embedded in.
   </p>
 
   <p>
-    The formal escape requires breaking the loop structurally. Evaluation must enter from <em>outside</em> the optimization program—from counterparties with their own interests who are not reachable by gradient descent. And consequences must <em>accumulate</em> across interactions, not reset per episode, so exploiting the evaluator carries a lasting cost. These two properties define what we call a grounded economic environment. Crucially, neither property can be achieved by a single agent operating alone: they require a multi-agent economy with persistent identities, internal trade, and real stakes. This paper asks: what are the formal conditions for each level of that economy, and what experimental evidence would confirm or falsify each transition?
+    This paper proposes a five-level taxonomy (AE-0 through AE-4) that formalizes these stages. Each level is defined by the structural properties of $\mathcal{B}$'s internal economy—not by individual agent capability—and by the nature of its exchange with the human economy $\mathcal{A}$. Each level has formal entry conditions, observable signatures, and explicit falsification criteria. The thesis is that the relevant unit of analysis is the economy, not the agent, and that the competitive question at maturity is not "how capable are your agents" but "how well-designed is the environment in which they operate."
   </p>
 
   <!-- 2×2 MATRIX -->
-  <h3>The Evaluation Landscape</h3>
+  <h3>Two Axes That Define Structural Maturity</h3>
+  <p>Each level can be placed on two axes that capture the structural properties of the agent economy's internal exchange:</p>
   <div class="matrix-wrap">
     <div class="matrix">
       <div class="mx-corner"></div>
       <div class="mx-header">Consequences<br>Reset</div>
       <div class="mx-header">Consequences<br>Persist</div>
-      <div class="mx-row-label">Judgment<br>Authored</div>
+      <div class="mx-row-label">No Internal<br>Economy</div>
       <div class="mx-cell">
         <div class="cell-title">AE-0</div>
-        Benchmarks · Synthetic envs · RLHF loops. The puzzle corner: optimization pressure turns every authored judge into a target.
+        Isolated agents. Each runs independently with no inter-agent trade or persistent identity. A population, not an economy.
       </div>
       <div class="mx-cell">
-        <div class="cell-title">Partial — AE-1</div>
-        Recommender loops. Consequences persist but judgment still lives inside the program. Scissors diverge slowly.
+        <div class="cell-title">AE-1</div>
+        Agents receive price signals from $\mathcal{A}$ and accumulate earnings, but no internal market between agents has formed yet.
       </div>
-      <div class="mx-row-label">Judgment<br>Unauthored</div>
+      <div class="mx-row-label">Internal<br>Economy</div>
       <div class="mx-cell">
-        <div class="cell-title">Partial — AE-2</div>
-        Human preference ratings. Judgment is external but episodes reset; selection signal is sparse and noisy.
+        <div class="cell-title">AE-2</div>
+        Agents interact and form reputations, but consequences reset. Internal market forms and dissolves. Trust cannot accumulate across interactions.
       </div>
       <div class="mx-cell highlight">
         <div class="cell-title">AE-3 / AE-4 ← target</div>
-        Persistent consequences + external judgment. The structurally stable corner: the evaluator cannot be optimized away because it is not part of the optimization program.
+        Full internal economy: persistent identities, accumulated capital and reputation, inter-agent specialisation, RSI dynamics. Exchange with $\mathcal{A}$ is sustainable and self-improving.
       </div>
     </div>
   </div>
